@@ -1,3 +1,4 @@
+require 'pry'
 class DailyStreak
   #has a date/day of week, has an array of many props, not responsible for scraping
   attr_accessor :day, :props
@@ -7,5 +8,5 @@ class DailyStreak
   end
 
 
-
+binding.pry
 end
