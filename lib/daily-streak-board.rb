@@ -8,5 +8,4 @@ class DailyStreak
   end
 
 
-binding.pry
 end
