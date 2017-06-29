@@ -9,39 +9,54 @@ class Scraper
     @@doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
   end
 
-  def all_props #ordered by start time
+  def all_prop_titles#ordered by start time
     @all_prop_titles = []
-    prop_title = @@doc.css("div.matchup-container strong")
-    prop_title.each_index {|x| @all_prop_titles << prop_title[x].text}
-  end
+    i = 0
+    while i < 15 do
+    @all_prop_titles << @@doc.css("div.matchup-container strong")[i].text
+    i+=1
+    end
+  end #method is not passing in data. will come back
 
   def number_of_props
     @@doc.css("div.matchup-container").size
   end
 
+  def name_of_sport
+    @@doc.css("div.sport-description")[index].text
+  end
 
+  def start_time
+    @@doc.css("div.matchupDate")[index].text
+  end
 
+  def away_team_name
+    @@doc.css("div #games-content tr td span strong")[index].text
+  end
 
+  def home_team_name
+    @@doc.css("div #games-content tr td span strong")[index].text
+  end
 
+  def preview_link
+    @@doc.css("div.matchupStatus a").attr("href").value
+  end
+
+  def select_away_team
+    @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href").value
+  end
+
+  def select_home_team
+    @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href").value
+  end
+
+  def total_props  #returns: "(20 Total)"
+    @@doc.css("span.date-matchup-count")[0].text
+  end
+  
+  def current_date #returns: "Thu Jun. 29"
+    @@doc.css("li.date.active span")[0].text
+  end
 
 binding.pry
 end
-
-#number_of_props: ("div.matchup-container").size
-#all_prop_titles: ("div.matchup-container strong")
-
-#event_title: ("div.matchup-container strong").first.text
-#name_of_sport: ("div.sport-description")[index].text
-#start_time: ("div.matchupDate")[index].text
-#away_team: ("div #games-content tr td span strong")[index].text
-#home_team: ("div #games-content tr td span strong")[index].text
-
-#preview_link/matchup-status: ("div.matchupStatus a").attr("href")[index].value
-
-#address = http://streak.espn.com/en/  +  ----> the css return will be full link
-#pick_away_team: ("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href")[index].value
-#pick_home_team: ("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href")[index].value
-
-#total props: ("span.date-matchup-count").first.text  ----> returns: "(20 Total)"
-
-#current date: ("li.date.active span").first.text  ----> returns: "Thu Jun. 29"
