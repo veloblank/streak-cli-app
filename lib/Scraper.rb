@@ -13,12 +13,17 @@ class Scraper
 
   def all_props #ordered by start time
     @all_prop_titles = []
-    @@doc.css("div.matchup-container").collect do |game_question|
-      @all_prop_titles << game_question
+    i = 0
+    while i < self.number_of_props
+      prop_title = @@doc.css("div.matchup-container strong")[i].text
+      @all_prop_titles << prop_title
+      i += 1
     end
   end
 
-
+  def number_of_props
+    @@doc.css("div.matchup-container").size
+  end
 
 
 
