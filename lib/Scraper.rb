@@ -1,5 +1,10 @@
+require 'nokogiri'
+require 'open-uri'
 require 'pry'
+
 class Scraper
+
+
   attr_accessor :day
   def initialize(day)
     #would like to have variable @dailystreak = DailyStreak.new(day)
@@ -7,11 +12,12 @@ class Scraper
 
   end
 
+  def initial_scrape
+    doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
+    binding.pry
+  end
 
 
-
-
-binding.pry
 end
 
 
@@ -24,13 +30,13 @@ end
 #home_team: #buried with an href .text
 #skipping result:
 #preview_link/matchup-status: div class="matchupStatus" a .text
-
 #address = http://streak.espn.com/en/createOrUpdateEntry?matchup=
 #pick_away_team: "address" + "=m60022o60930&date=20170628"
     #buried in a#matchupDiv and then has unique URL
 #pick_home_team: "address" + "=m60022o60931&date=20170628"
     #buried in a#matchupDiv and then has unique URL
-
+#total props: li.date.active span.date-matchup-count .text
+#current date: li.date.active span .text
     #Scraping the Away or Home team seems difficult on the surface. The href is
     #chopped up into several different pieces.
 
