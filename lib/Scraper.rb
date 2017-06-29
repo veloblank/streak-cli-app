@@ -3,21 +3,41 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
+  attr_reader :day
   @@doc = []
-  #@@all = [] #don't really need this currently. maybe as future project
 
-  attr_accessor :day
-  def initialize(day)
+  def initialize(day) #limited functionality of parameter, since I am only creating one instance of Scraper.
     @day = day
     @@doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
-    #@@all << self
   end
+
+  def all_props #ordered by start time
+    @all_prop_titles = []
+    @@doc.css("div.matchup-container").collect do |game_question|
+      @all_prop_titles << game_question
+    end
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+binding.pry
+
 end
 
+#number_of_props: ("div.matchup-container").size
+#all_prop_titles: ("div.matchup-container strong")
 
-#all_props: div class="matchup-container"
-
-#event_title: ("div.matchup-container")[index].text
+#event_title: ("div.matchup-container strong").first.text
 #name_of_sport: ("div.sport-description")[index].text
 #start_time: ("div.matchupDate")[index].text
 #away_team: ("div #games-content tr td span strong")[index].text
