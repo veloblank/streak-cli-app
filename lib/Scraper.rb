@@ -3,22 +3,16 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
-  attr_reader :day
   @@doc = []
 
-  def initialize(day) #limited functionality of parameter, since I am only creating one instance of Scraper.
-    @day = day
+  def initialize
     @@doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
   end
 
   def all_props #ordered by start time
     @all_prop_titles = []
-    i = 0
-    while i < self.number_of_props
-      prop_title = @@doc.css("div.matchup-container strong")[i].text
-      @all_prop_titles << prop_title
-      i += 1
-    end
+    prop_title = @@doc.css("div.matchup-container strong")
+    prop_title.each_index {|x| @all_prop_titles << prop_title[x].text}
   end
 
   def number_of_props
@@ -30,13 +24,7 @@ class Scraper
 
 
 
-
-
-
-
-
 binding.pry
-
 end
 
 #number_of_props: ("div.matchup-container").size
