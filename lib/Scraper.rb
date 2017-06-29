@@ -3,33 +3,35 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
-
+  @@doc = []
 
   attr_accessor :day
   def initialize(day)
     #would like to have variable @dailystreak = DailyStreak.new(day)
+    @day = day
 
 
   end
 
   def initial_scrape
-    doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
-    binding.pry
+    @@doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
+
   end
 
-
+binding.pry
 end
 
 
 #all_props: div class="matchup-container"
 
-#event_title: div class="gamequestion" .text
-#sport: div class="sport-description" .text
-#start_time: div class="matchupDate span class="startTime" .text
-#away_team: #buried with an href .text
-#home_team: #buried with an href .text
-#skipping result:
-#preview_link/matchup-status: div class="matchupStatus" a .text
+#event_title: ("div.matchup-container")[index].text
+#name_of_sport: ("div.sport-description")[index].text
+#start_time: ("div.matchupDate")[index].text
+#away_team: ("div #games-content tr td span strong")[index].text
+#home_team: ("div #games-content tr td span strong")[index].text
+
+#preview_link/matchup-status: ("div.matchupStatus a").attr("href").value
+
 #address = http://streak.espn.com/en/createOrUpdateEntry?matchup=
 #pick_away_team: "address" + "=m60022o60930&date=20170628"
     #buried in a#matchupDiv and then has unique URL
