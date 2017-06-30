@@ -7,16 +7,16 @@ class Scraper
 
   def initialize(day)
     @day = day
-    @@doc = Nokogiri::HTML(open("https://streak.espn.go."))
-    binding.pry
+    @@doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
   end
 
-  def all_prop_titles#ordered by start time
+  def all_prop_titles #will order by start time d/t top-down scrape on site
     @all_prop_titles = []
-    @@doc.css("div.matchup-container strong")[0]
-
-
-  end #method is not passing in data. will come back
+    @@doc.css("div.matchup-container div.gamequestion strong").each do |title|
+      @all_prop_titles << title.text
+      binding.pry
+    end
+  end
 
   def number_of_props
     @@doc.css("div.matchup-container").size
