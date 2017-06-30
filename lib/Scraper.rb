@@ -3,24 +3,31 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
-  @@doc = []
+  attr_accessor :day
 
-  def initialize
-    @@doc = Nokogiri::HTML(open("http://streak.espn.go.com"))
+  def initialize(day)
+    @day = day
+    @@doc = Nokogiri::HTML(open("https://streak.espn.go."))
+    binding.pry
   end
 
   def all_prop_titles#ordered by start time
     @all_prop_titles = []
-    i = 0
-    while i < 15 do
-    @all_prop_titles << @@doc.css("div.matchup-container strong")[i].text
-    i+=1
-    end
+    @@doc.css("div.matchup-container strong")[0]
+
+
   end #method is not passing in data. will come back
 
   def number_of_props
     @@doc.css("div.matchup-container").size
   end
+
+
+
+
+
+
+
 
   def name_of_sport
     @@doc.css("div.sport-description")[index].text
@@ -53,10 +60,9 @@ class Scraper
   def total_props  #returns: "(20 Total)"
     @@doc.css("span.date-matchup-count")[0].text
   end
-  
+
   def current_date #returns: "Thu Jun. 29"
     @@doc.css("li.date.active span")[0].text
   end
-
 binding.pry
 end
