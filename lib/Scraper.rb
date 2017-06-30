@@ -4,17 +4,17 @@ require 'pry'
 
 class Scraper
   attr_accessor :day
+  @@doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
 
   def initialize(day)
     @day = day
-    @@doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
+    @all_prop_titles = []
+    @days_sports = []
   end
 
   def all_prop_titles #will order by start time d/t top-down scrape on site
-    @all_prop_titles = []
     @@doc.css("div.matchup-container div.gamequestion strong").each do |title|
       @all_prop_titles << title.text
-      binding.pry
     end
   end
 
@@ -22,15 +22,12 @@ class Scraper
     @@doc.css("div.matchup-container").size
   end
 
-
-
-
-
-
-
-
-  def name_of_sport
-    @@doc.css("div.sport-description")[index].text
+  def name_of_sports
+    @@doc.css("div.sport-description").each do |sport|
+      @days_sports << sport.text
+    end # was not getting all sports for props, but checked site and some swimming events did
+        # not have 'swimming' listed as the sport. Considering adding 'nil' or 'adhoc', etc, when prop
+        # does not have a sport.
   end
 
   def start_time
