@@ -4,9 +4,13 @@ require 'pry'
 require 'date'
 
 class Prop
+
+  attr_accessor :prop_title, :sport, :start_time, :away_team, :home_team, :preview_link
+
+  @@doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
   @prop_date = DateTime.now.strftime "%Y%m%d"
-  ESPN = "http://streak.espn.com/en/"
-  @@doc = Nokogiri::HTML(open(ESPN))
+  @alt_date = @@doc.css("li.date.active span").first.text
+
 
   def initialize
     @all_prop_titles = []
@@ -31,7 +35,7 @@ class Prop
     @@doc.css("div.matchup-container").size
   end
 
-  def name_of_sports  #Some props do not have sport names. Could be a problem.
+  def name_of_sports  #Some props do not have scrapeable sport names. Could be a problem.
     @@doc.css("div.sport-description").each do |sport|
       @days_sports << sport.text
     end
