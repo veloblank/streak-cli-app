@@ -4,45 +4,49 @@ require 'pry'
 
 class Scraper
   ESPN = "http://streak.espn.com/en/"
-  @@prop_hash = {}
-  @@prop_key = []
+  @prop_hash = {}
+  @prop_keys = []
 
-  def self.create_prop_key 
+  attr_accessor :number_of_props, :prop_keys
+
+  def initialize(number_of_props)
+    @number_of_props = number_of_props
     i = 1
-    while i <= 32 do
-      @@prop_key << "Prop_#{i}:"
+    while i <= number_of_props do
+      @prop_keys << "Prop_#{i}:"
       i+=1
     end
   end #=> "["Prop_1:", "Prop_2:", "Prop_3:"]"
 
-  def self.scrape
+  def self.scrape(prop_keys)
+    @prop_date = DateTime.now.strftime "%Y%m%d"
     @doc = Nokogiri::HTML(open(ESPN))
-    number_of_props = @@doc.css("div.matchup-container").size
-    i = 0
-    while i < number_of_props do
-      @@prop_hash = @@prop_key[i] {
-        event_title: @doc.css("div.matchup-container div.gamequestion strong").each {|title| title.text},
-        start_time: @doc.css("div.matchupDate").each {|time| time.text},
-          if i.even?
-            away_team: @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index {|away_team| away_team.text},
-          elsif i.odd?
-            home_team: @doc.css("div #games-content tr td.mg-column3.opponents.last").each {|home_team| home_team.text},
-            prop_preview: @doc.css("div.matchupStatus a").each {|preview_link| preview_link.attr("href")
-          end
-        team_url = @doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each do |team_link|
-        partial_link = team_link.attr("href")
-        full_link = ESPN + partial_link + "&date=" + "@prop_date"
-          if partial_link.split(%r{\s*}).last.to_i.even?
-            away_team_url: team_url
-          else
-            home_team_url: team_url
-          end
-        end
-      end
-    end
-end
 
+    prop_keys.each_with_index do |prop, i|
+     if i.even?
+       prop = {
+         event_title: @doc.css("div.matchup-container div.gamequestion strong")[i].text,
+         start_time: @doc.css("div.matchupDate")[i].text},
+         prop_preview: @doc.css("div.matchupStatus a")[i].attr("href"),
+         away_team: @doc.css("div #games-content tr td.mg-column3.opponents")[i].text},
+         home_team: @doc.css("div #games-content tr td.mg-column3.opponents.last")[i].text},
+             else
+          team_url = @doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i] do |team_link|
+            partial_url = team_url.attr("href")
+            if partial_url.split(%r{\s*}).last.to_i.even?
+            full_url = ESPN + partial_url + "&date=" + "@prop_date"
+              away_team_url: full_url,
+              home_team_url: full_url
+#             end
+#           }
+#       end
+#     end
 
+elsif i.odd?
+
+#  def number_of_props
+#    number_of_props = @doc.css("div.matchup-container").size
+#  end
 
 
 
