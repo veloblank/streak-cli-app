@@ -6,6 +6,8 @@ class Scraper
   ESPN = "http://streak.espn.com/en/"
   attr_accessor :day
   @@doc = Nokogiri::HTML(open(ESPN))
+  @@select_away_teams_urls  #this for testing
+  @@select_home_teams_urls  #this for testing
 
   def initialize(day)
     @day = day
@@ -58,19 +60,34 @@ class Scraper
 
   def preview_links
     @@doc.css("div.matchupStatus a").each do |preview_link|
-      @preview_links << preview_link.attr("href").value
+      @preview_links << preview_link.attr("href")
     end
   end
 
-  def select_away_team
-    @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each do |away_link|
-      partial_link = away_link.attr("href").value
+  def current_date #returns: "Thu Jun. 29"
+    @current_date= @@doc.css("li.date.active span").first.text
+  end
+
+  def select_away_team #will only work with props not yet started
+    @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each do |team_link|
+      partial_link = team_link.attr("href")
+      #=> "createOrUpdateEntry?matchup=m60071o60970"
+      # It's tough to get away and home teams because of CSS, but I realized the away team has an
+      # even integer at the end of partial_link, so a little regex magic gets this:
       full_link = ESPN + partial_link
-      #http://streak.espn.com/en/createOrUpdateEntry?matchup=m60069o60967
+      if partial_link.split(%r{\s*}).last.to_i.even?
+        @@select_away_teams_urls << full_link
+      else
+        @@select_home_teams_urls << full_link
+      end
+      #http://streak.espn.com/en/createOrUpdateEntry?matchup=m60071o60970&date=20170630
+      binding.pry
+
+
     end
   end
 
-  def select_home_team
+  def select_home_team #will need parameter, no need to grab all away team URLs
     @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href").value
   end
 
@@ -78,8 +95,5 @@ class Scraper
     @@doc.css("span.date-matchup-count").first.text
   end
 
-  def current_date #returns: "Thu Jun. 29"
-    @current_date= @@doc.css("li.date.active span").first.text
-  end
 binding.pry
 end
