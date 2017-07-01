@@ -1,28 +1,18 @@
-require 'nokogiri'
-require 'open-uri'
 require 'pry'
-require 'date'
 
 class Prop
-
-  attr_accessor :prop_title, :sport, :start_time, :away_team, :home_team, :preview_link
-
-  @@doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
-  @prop_date = DateTime.now.strftime "%Y%m%d"
-  @alt_date = @@doc.css("li.date.active span").first.text
-
-
+  attr_accessor :title, :time, :sport, :away_team, :home_team, :preview_link, :away_team_url, :home_team_url
+  @@all = []
   def initialize
-    @all_prop_titles = []
-    @number_of_props = nil
-    @days_sports = []
-    @start_times = []
-    @away_teams = []
-    @home_teams = []
-    @preview_links = []
-    @current_date = nil
-    @select_away_teams_urls  #this for testing
-    @select_home_teams_urls  #this for testing
+    @prop_title
+    @sport
+    @start_time
+    @away_team
+    @home_team
+    @preview_link
+    @away_team_url
+    @home_team_url
+    @@all
   end
 
   def all_prop_titles #will order by start time d/t top-down scrape on site
