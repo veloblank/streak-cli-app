@@ -1,24 +1,13 @@
 require 'nokogiri'
 require 'open-uri'
 require 'pry'
+require 'date'
 
 class Scraper
   ESPN = "http://streak.espn.com/en/"
-  attr_accessor :day
-  @@doc = Nokogiri::HTML(open(ESPN))
-  @@select_away_teams_urls  #this for testing
-  @@select_home_teams_urls  #this for testing
 
-  def initialize(day)
-    @day = day
-    @all_prop_titles = []
-    @number_of_props = nil
-    @days_sports = []
-    @start_times = []
-    @away_teams = []
-    @home_teams = []
-    @preview_links = []
-    @current_date = nil
+  def initialize(day = current_date)
+    doc = Nokogiri::HTML(open(ESPN))
   end
 
   def all_prop_titles #will order by start time d/t top-down scrape on site
@@ -68,27 +57,20 @@ class Scraper
     @current_date= @@doc.css("li.date.active span").first.text
   end
 
-  def select_away_team #will only work with props not yet started
+  def select_team_urls #will only work with props not yet started
     @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each do |team_link|
       partial_link = team_link.attr("href")
       #=> "createOrUpdateEntry?matchup=m60071o60970"
       # It's tough to get away and home teams because of CSS, but I realized the away team has an
       # even integer at the end of partial_link, so a little regex magic gets this:
-      full_link = ESPN + partial_link
-      if partial_link.split(%r{\s*}).last.to_i.even?
-        @@select_away_teams_urls << full_link
-      else
-        @@select_home_teams_urls << full_link
-      end
+      full_link = ESPN + partial_link + "&date=" + "@prop_date"
       #http://streak.espn.com/en/createOrUpdateEntry?matchup=m60071o60970&date=20170630
-      binding.pry
-
-
+      if partial_link.split(%r{\s*}).last.to_i.even?
+        @select_away_teams_urls << full_link
+      else
+        @select_home_teams_urls << full_link
+      end
     end
-  end
-
-  def select_home_team #will need parameter, no need to grab all away team URLs
-    @@doc.css("a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").attr("href").value
   end
 
   def total_props  #returns: "(20 Total)". Kind of redundant method and it is string output.
