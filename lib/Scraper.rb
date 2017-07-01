@@ -10,12 +10,13 @@ class Scraper
   def initialize(day)
     @day = day
     @all_prop_titles = []
+    @number_of_props = nil
     @days_sports = []
     @start_times = []
     @away_teams = []
     @home_teams = []
     @preview_links = []
-    @current_date = []
+    @current_date = nil
   end
 
   def all_prop_titles #will order by start time d/t top-down scrape on site
@@ -28,31 +29,34 @@ class Scraper
     @@doc.css("div.matchup-container").size
   end
 
-  def name_of_sports
+  def name_of_sports  #Some props do not have sport names.
     @@doc.css("div.sport-description").each do |sport|
       @days_sports << sport.text
     end
   end
 
-  def start_time
+  def start_times
     @@doc.css("div.matchupDate").each do |time|
       @start_times << time.text
     end
   end
 
-  def away_team_name
-    @@doc.css("div #games-content tr td span strong").each do |away_team|
-      @away_teams << away_team.text
+  def away_team_names
+    @@doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |away_team, i|
+      if i.even?
+        @away_teams << away_team.text
+      end #scraper was getting both teams with this CSS
     end
+    return #controls an out of control return value if it ended wrong 'i'
   end
 
-  def home_team_name
-    @@doc.css("div #games-content tr td span strong").each do |home_team|
+  def home_team_names
+    @@doc.css("div #games-content tr td.mg-column3.opponents.last").each do |home_team|
       @home_teams << home_team.text
     end
   end
 
-  def preview_link
+  def preview_links
     @@doc.css("div.matchupStatus a").each do |preview_link|
       @preview_links << preview_link.attr("href").value
     end
