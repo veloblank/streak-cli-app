@@ -4,9 +4,9 @@ require 'pry'
 
 class Scraper
   ESPN = "http://streak.espn.com/en/"
-  @@props = []
+  @@scraped_props = []
 
-  def self.scrape
+  def self.scrape_and_create_prop
     away_teams = []
     home_teams = []
     @doc = Nokogiri::HTML(open(ESPN))
@@ -32,7 +32,7 @@ class Scraper
         home_team: home_teams[i],
         prop_preview: prop_preview
       ]
-        @@props << prop
+        @@scraped_props << prop
     i+=1
     end
   end

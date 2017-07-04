@@ -1,35 +1,30 @@
 require 'pry'
 
 class Prop
-
-  attr_accessor :title, :time, :sport, :away_team, :home_team, :preview_link
   @@all = []
 
-  def initialize(title=nil, time=nil, sport=nil, away_team=nil, home_team=nil, preview_link=nil )
-    @title = title
-    @time = time
-    @sport = sport
-    @away_team = away_team
-    @home_team = home_team
-    @preview_link = preview_link
+  attr_accessor :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview
+
+  def initialize(daily_props)
+    daily_props.each do |attribute, value|
+      self.send("#{attribute}=", "#{value}")
+    end
     @@all << self
   end
+
+  def generate_props_from_hash(props_hash)
+
+    
+    prop = Prop.new(rops)
+  end
+
+  def prop
+
+
 
   def self.all
     @@all
   end
-
-
-  def
-
-  end
-
-
-
-
-
-
-
 
 binding.pry
 end
