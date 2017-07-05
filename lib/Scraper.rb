@@ -6,9 +6,10 @@ class Scraper
   ESPN = "http://streak.espn.com/en/"
   @@scraped_props = []
 
-  def self.scrape_and_create_prop
+  def self.scrape_site
     away_teams = []
     home_teams = []
+    formatted_date  = DateTime.now.strftime "%Y%m%d"
     @doc = Nokogiri::HTML(open(ESPN))
     prop_num = @doc.css("div.matchupDate").size
     @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |x, i|
@@ -36,10 +37,24 @@ class Scraper
     i+=1
     end
   end
+
+  def self.scraped_props
+    @@scraped_props
+  end
 binding.pry
 end
 
-#Had a continuous off by one error, and found it was a bad html line. The away team HTML
-#returned ALL the contestants of ALL the props, not just the away teams. And the home team css
-#returned just the home. I recorded a video describing this fix. And I coded a work-around.
-#I dare say I'm done with the scraper. At least it gets me the information I minimally need.
+#contains both home and away selection_urls
+@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[index].attr("href")
+ #=> "createOrUpdateEntry?matchup=m60175o61055&date=20170705"
+
+ @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[index].attr("selectionid")
+#=> "m60175o61055"
+
+#away_team
+@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[1].attr("selectionid").split("").last.to_i.even?
+#=> false
+
+#home_team
+@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[1].attr("selectionid").split("").last.to_i.even?
+#=> true

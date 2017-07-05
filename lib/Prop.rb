@@ -12,15 +12,10 @@ class Prop
     @@all << self
   end
 
-  def generate_props_from_hash(props_hash)
-
-    
-    prop = Prop.new(rops)
+  def generate_props
+    scrape_site = Scraper.scrape_site
+binding.pry
   end
-
-  def prop
-
-
 
   def self.all
     @@all

@@ -1,82 +1,21 @@
+require 'pry'
 
+class Cli
+  
 
+  def run
+    self.scrape_site
+    self.prep_prop_info
 
+  end
 
+  def scrape_site
+    puts "Here are the Streak props for today..."
+    Prop.generate_props(Scraper.get_page)
+  end
 
+  def prep_prop_info
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# require 'pry'
-# class DailyStreak
-#   #has a date/day of week, has an array of many props, not responsible for scraping
-#   attr_accessor :day, :props
-#
-#   @prop_date = DateTime.now.strftime "%Y%m%d"
-#   @alt_date = @@doc.css("li.date.active span").first.text
-#
-#   def initialize(day)
-#     @day = day
-#     @props = [] #array or hash? probably array of props. props might be hashes.
-#   end
-#
-#   def prop_builder
-#
-#
-#
-#
-#
-#
-#
-#   end
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  end
+binding.pry
 end
