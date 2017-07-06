@@ -14,12 +14,10 @@ class Prop
 
   def generate_props
     scrape_site = Scraper.scrape_site
-binding.pry
   end
 
   def self.all
     @@all
   end
 
-binding.pry
 end

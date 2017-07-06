@@ -1,7 +1,7 @@
 require 'pry'
 
 class Cli
-  
+
 
   def run
     self.scrape_site
@@ -10,12 +10,15 @@ class Cli
   end
 
   def scrape_site
+    puts "----------------------------------------------"
+    puts "     Welcome to the DailyStreak Front Page"
+    puts "----------------------------------------------"
     puts "Here are the Streak props for today..."
-    Prop.generate_props(Scraper.get_page)
+
   end
 
   def prep_prop_info
 
   end
-binding.pry
+
 end

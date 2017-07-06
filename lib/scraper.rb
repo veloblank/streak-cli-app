@@ -44,14 +44,4 @@ class Scraper
   def self.scraped_props
     @@scraped_props
   end
-  binding.pry
 end
-
-
-
-
-
-
-
-
-#home_or_away =  @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[index].attr("selectionid").split("").last.to_i
