@@ -3,18 +3,18 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
-  ESPN = "http://streak.espn.com/en/"
   @@scraped_props = []
   @@team_urls = []
 
   def self.scrape_site
-    @doc = Nokogiri::HTML(open(ESPN))
+    site = "http://streak.espn.com/en/"
+    @doc = Nokogiri::HTML(open("http://streak.espn.com/en/"))
     prop_num = @doc.css("div.matchupDate").size
     away_teams = []
     home_teams = []
 
     @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |x, i|
-      team_url = ESPN + "#{@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i].attr("href")}"
+      team_url = site + "#{@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i].attr("href")}"
       if i.even?
         away_teams.push [x.text, team_url]
       else

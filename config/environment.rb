@@ -1,4 +1,5 @@
-require_relative '../lib/prop.rb'
-require_relative '../lib/scraper.rb'
+require_relative '../lib/cli'
+require_relative '../lib/prop'
+require_relative '../lib/scraper'
 
 puts "Environment loaded!!!"

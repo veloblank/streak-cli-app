@@ -2,7 +2,6 @@ require 'pry'
 
 class Cli
 
-
   def run
     self.scrape_site
     self.prep_prop_info
@@ -14,6 +13,7 @@ class Cli
     puts "     Welcome to the DailyStreak Front Page"
     puts "----------------------------------------------"
     puts "Here are the Streak props for today..."
+    puts ""
 
   end
 
