@@ -5,6 +5,7 @@ class Cli
 
   def run
     Scraper.get_page
+    Scraper.build_props
     props_hash = Scraper.all_props
     Prop.generate_props_by_hash(props_hash)
     self.welcome
@@ -16,15 +17,10 @@ class Cli
     puts "----------------------------------------------".colorize(:green)
     puts "Here are the Streak props for today..."
     puts ""
-    puts ""
-
+    binding.pry
   end
 
 
-
-    def remaining_props
-
-    end
 
 
 

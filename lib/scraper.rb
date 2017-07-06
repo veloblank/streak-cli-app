@@ -3,48 +3,55 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
+  ESPN = "http://streak.espn.com/en/"
   @@scraped_props = []
   @@team_urls = []
 
   def self.get_page
-    site = "http://streak.espn.com/en/"
-    @doc = Nokogiri::HTML(open(site))
-    prop_num = @doc.css("div.matchupDate").size
-    away_teams = []
-    home_teams = []
+    @doc = Nokogiri::HTML(open(ESPN))
+    @prop_num = @doc.css("div.matchupDate").size
+  end
 
-    @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |x, i|
-      team_url = site + "#{@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i].attr("href")}"
-      binding.pry
-            if i.even?
-        away_teams << x.text
-      else
-        home_teams << x.text
-      end
-      @@team_urls << team_url
+  def self.get_teams
+    @away_teams = []
+    @home_teams = []
+    @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |team, index|
+      index.even? ? @away_teams.push(team.text) : @home_teams.push(team.text)
     end
+  end
 
-    i = 0
-    while i < prop_num
-      event = @doc.css("div.matchup-container div.gamequestion strong")[i].text
-      start = @doc.css("div.matchupDate")[i].text
-      sport = @doc.css("div.sport-description")[i].text
-      prop_preview = @doc.css("div.matchupStatus a")[i].attr("href")
+  def self.build_props
+    get_teams
+    @doc.css("div.matchup-container div.gamequestion strong").each_with_index do |event, index|
+      event = event.text
+      start = @doc.css("div.matchupDate")[index].text
+      sport = @doc.css("div.sport-description")[index].text
+      prop_preview = @doc.css("div.matchupStatus a")[index].attr("href")
       prop = {
         event_title: event,
         start_time: start,
         sport: sport,
-        away_team: away_teams[i],
-        home_team: home_teams[i],
         prop_preview: prop_preview,
+        away_team: @away_teams[index],
+        home_team: @home_teams[index],
         away_team_url: "",
         home_team_url: ""
-      }
-
+        }
         @@scraped_props << prop
-    i+=1
+    end
+end
+
+  def self.scrape_team_urls
+    if @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").size/2 == @@scraped_props.size
+      @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each_with_index do |team, index|
+        team_url = ESPN + "#{team.attr("href")}"
+        @@team_urls << team_url
+      end
+    else
+      @@team_urls = Array.new(@prop_num, "")
     end
   end
+
 
   def self.all_props
     @@scraped_props
