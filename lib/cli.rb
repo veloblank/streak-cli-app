@@ -4,7 +4,8 @@ require 'colorize'
 class Cli
 
   def run
-    @props = Scraper.get_page
+    Scraper.get_page
+    @props = Scraper.all_props
     Prop.new(@props)
     self.welcome
   end

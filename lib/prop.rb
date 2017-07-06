@@ -3,12 +3,14 @@ require 'pry'
 class Prop
   @@all = []
 
-  attr_accessor :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview, :team_url
+  attr_accessor :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview, :away_team_url, :home_team_url
 
   def initialize(props)
-    props.each_with_index do |x, i|
-      x[i].each do |attribute, value|
-        self.send("#{attribute}=", "#{value}")
+    props.each do |prop|
+      binding.pry
+      attribute.each do |k, v|
+        binding.pry
+        self.send("#{k}=", "#{v}")
         binding.pry
       end
     end
