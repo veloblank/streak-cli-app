@@ -17,15 +17,12 @@ class Cli
     puts "Here are the Streak props for today..."
     puts ""
     puts ""
-    
+
   end
 
 
 
     def remaining_props
-      Prop.all.collect do |prop|
-        binding.pry
-      end
 
     end
 

@@ -7,4 +7,4 @@ def reload!
   load_all './lib'
 end
 
-IRB.start
+Cli.new.run

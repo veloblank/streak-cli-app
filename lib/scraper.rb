@@ -7,7 +7,7 @@ class Scraper
   @@team_urls = []
 
   def self.get_page
-    site = "http://streak.espn.com/en/?date=20170707"
+    site = "http://streak.espn.com/en/"
     @doc = Nokogiri::HTML(open(site))
     prop_num = @doc.css("div.matchupDate").size
     away_teams = []
@@ -15,7 +15,8 @@ class Scraper
 
     @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |x, i|
       team_url = site + "#{@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i].attr("href")}"
-      if i.even?
+      binding.pry
+            if i.even?
         away_teams << x.text
       else
         home_teams << x.text
