@@ -1,24 +1,22 @@
 require 'pry'
+require 'colorize'
 
 class Cli
 
   def run
-    self.scrape_site
-    self.prep_prop_info
-
+    @props = Scraper.get_page
+    Prop.new(@props)
+    self.welcome
   end
 
-  def scrape_site
-    puts "----------------------------------------------"
-    puts "     Welcome to the DailyStreak Front Page"
-    puts "----------------------------------------------"
-    puts "Here are the Streak props for today..."
+  def welcome
+    puts "----------------------------------------------".colorize(:green)
+    puts "     Welcome to the DailyStreak Front Page".colorize(:green)
+    puts "----------------------------------------------".colorize(:green)
+    puts "Here are the #{@props.size} Streak props for today..."
     puts ""
-
-  end
-
-  def prep_prop_info
-
+    puts ""
+    binding.pry
   end
 
 end
