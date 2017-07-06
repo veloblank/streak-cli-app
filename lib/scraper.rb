@@ -14,8 +14,6 @@ class Scraper
     home_teams = []
 
     @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |x, i|
-
-      #following addresses NilClass error if a prop has already started:
       team_url = site + "#{@doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[i].attr("href")}"
       if i.even?
         away_teams << x.text
