@@ -5,20 +5,19 @@ class Prop
 
   attr_accessor :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview, :away_team_url, :home_team_url
 
-  def initialize(props)
-    props.each do |prop|
-      binding.pry
-      attribute.each do |k, v|
-        binding.pry
-        self.send("#{k}=", "#{v}")
-        binding.pry
-      end
+  def initialize(prop)
+    prop.each do |k, v|
+      self.send("#{k}=", "#{v}")
     end
     @@all << self
   end
 
-  def self.generate_props_by_hash(props)
-    scrape_site = Scraper.scrape_site
+  def self.generate_props_by_hash(props_hash)
+    props_hash.each_with_index do |prop, i|
+      prop[:away_team_url] = Scraper.all_team_urls.fetch(i)
+      prop[:home_team_url] = Scraper.all_team_urls.fetch(i+1)
+      Prop.new(prop)
+    end
   end
 
   def self.all
