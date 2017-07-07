@@ -17,19 +17,18 @@ class Cli
     puts "----------------------------------------------".colorize(:green)
     puts "Here are the Streak props for today..."
     puts ""
-    binding.pry
+    puts ""
+    self.print_props
+    puts
   end
 
+  
 
-
-
-
-
-
-
-
-
-
-
-
+  def print_props
+    Prop.all.each.with_index(1) do |prop, index|
+        puts "#{prop.event_title}".colorize(:red)
+        puts "#{index}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "#{prop.home_team}"
+        puts ""
+    end
+  end
 end
