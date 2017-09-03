@@ -14,12 +14,10 @@ class Prop
 
   def self.generate_props_by_hash(props_hash)
     Scraper.scrape_team_urls
-    if Scraper.scrape_team_urls.none?{|ele| ele == ""}
-      props_hash.each_with_index do |prop, i|
-        prop[:away_team_url] = Scraper.all_team_urls.fetch(i)
-        prop[:home_team_url] = Scraper.all_team_urls.fetch(i+1)
-        Prop.new(prop)
-      end
+    props_hash.each_with_index do |prop, i|
+      prop[:away_team_url] = Scraper.away_team_urls[i]
+      prop[:home_team_url] = Scraper.home_team_urls[i]
+      Prop.new(prop)
     end
   end
 
