@@ -10,7 +10,6 @@ class Scraper
   def self.scrape_page
     @doc = Nokogiri::HTML(open(ESPN))
     @@scraped_props = @doc.css("div .matchup-container")
-    @@scraped_props.size
   end
 
   def self.scrape_props
@@ -43,8 +42,7 @@ class Scraper
         else
         end
       @@props << prop
-      end
-    @@props
+    end
   end
 
   def self.all_props
