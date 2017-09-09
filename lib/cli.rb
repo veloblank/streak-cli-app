@@ -17,13 +17,16 @@ class Cli
   end
 
   def welcome
+    puts ""
+    puts ""
+    puts ""
     puts "----------------------------------------------".colorize(:green)
     puts "     Welcome to the DailyStreak Front Page".colorize(:green)
     puts "----------------------------------------------".colorize(:green)
     puts "Here are the Streak props for today..."
     puts ""
     puts ""
-    puts
+    puts ""
   end
 
   def print_props
@@ -54,16 +57,16 @@ class Cli
       puts prop.matchup_status.colorize(:red)
       puts ""
       puts "1. Read Matchup Preview/Check Score"
+      puts ""
       puts "2. Insta-pick Away Team: " + "#{prop.away_team}".colorize(:green)
       puts "3. Insta-pick Home Team: " + "#{prop.home_team}".colorize(:green)
       puts ""
-      puts "4. Save Away Team in List"
-      puts "5. Save Home Team in List"
-      puts "6. Back"
+      puts "4. Save Away Team in Prop List"
+      puts "5. Save Home Team in Prop List"
       puts ""
       prop_menu_input = ""
-      while prop_menu_input != 'back'
-        puts "Make selection or type 'back': "
+      while prop_menu_input != 'exit'
+        puts "Press Enter to go back or type 'exit': "
         prop_menu_input = gets.chomp
         case prop_menu_input
         when "1"
@@ -76,6 +79,8 @@ class Cli
           Launchy.open("#{prop.home_team_url}")
           run
         when "4"
+          puts "Choose time (hhmmss) to make pick:"
+          choose_time = gets.strip
           user_prop_choice = {
             prop_id_num: prop.prop_id_num,
             event_title: prop.event_title,
@@ -84,12 +89,14 @@ class Cli
             selection: prop.away_team,
             prop_preview: prop.prop_preview,
             selection_url: prop.away_team_url,
-            matchup_status: prop.matchup_status
+            matchup_status: prop.matchup_status,
+            automate_pick_time: choose_time
           }
           @@user_selections << user_prop_choice
           puts "Saved!"
-          run
         when "5"
+          puts "Choose time (hhmmss) to make pick:"
+          choose_time = gets.strip
           user_prop_choice = {
             prop_id_num: prop.prop_id_num,
             event_title: prop.event_title,
@@ -98,13 +105,11 @@ class Cli
             selection: prop.home_team,
             prop_preview: prop.prop_preview,
             selection_url: prop.home_team_url,
-            matchup_status: prop.matchup_status
+            matchup_status: prop.matchup_status,
+            automate_pick_time: choose_time
           }
           @@user_selections << user_prop_choice
           puts "Saved!"
-          run
-        when "6"
-          run
         else
           run
         end
@@ -113,9 +118,18 @@ class Cli
   end
 
   def user_selections
-    @@user_selections.each do |pick|
-      puts "#{pick[:start_time]} " + " #{pick[:selection]}"
-    end
+    if @@user_selections.empty? == true
+      puts ""
+      puts "Your Prop List is empty.".colorize(:red)
+      puts ""
+      menu
+    else
+      puts ""
+      @@user_selections.each do |pick|
+        puts "#{pick[:start_time]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
+        puts""
+      end
     menu
+    end
   end
 end
