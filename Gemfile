@@ -5,5 +5,5 @@ source "https://rubygems.org"
 gem 'pry'
 gem 'require_all'
 gem 'nokogiri'
-gem 'nokogiri'
 gem 'colorize'
+gem 'launchy'

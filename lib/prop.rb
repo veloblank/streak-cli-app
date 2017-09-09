@@ -1,29 +1,32 @@
 require 'pry'
 
 class Prop
-  @@all = []
+  @@scraped_prop_data = []
+  @@props = []
 
-  attr_accessor :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview, :away_team_url, :home_team_url
+  attr_accessor :prop_id_num, :event_title, :start_time, :sport, :away_team, :home_team, :prop_preview, :away_team_url, :home_team_url, :matchup_status
 
-  def initialize(prop)
-    prop.each do |k, v|
-      self.send("#{k}=", "#{v}")
-    end
-    @@all << self
+  def initialize(hash)
+    @prop_id_num = hash[:prop_id_num]
+    @event_title = hash[:event_title]
+    @start_time = hash[:start_time]
+    @sport = hash[:sport]
+    @away_team = hash[:away_team]
+    @home_team = hash[:home_team]
+    @prop_preview = hash[:prop_preview]
+    @away_team_url = hash[:away_team_url]
+    @home_team_url = hash[:home_team_url]
+    @matchup_status = hash[:matchup_status]
+    @@props << self
   end
 
-  def self.generate_props_by_hash(props_hash)
-    Scraper.scrape_team_urls
-    if Scraper.scrape_team_urls.none?{|ele| ele == ""}
-      props_hash.each_with_index do |prop, i|
-        prop[:away_team_url] = Scraper.all_team_urls.fetch(i)
-        prop[:home_team_url] = Scraper.all_team_urls.fetch(i+1)
-        Prop.new(prop)
-      end
+  def self.build_props
+    Scraper.all_props.each do |prop_hash|
+      Prop.new(prop_hash)
     end
   end
 
-  def self.all
-    @@all
+  def self.all_props
+    @@props
   end
 end

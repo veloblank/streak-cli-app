@@ -5,59 +5,47 @@ require 'pry'
 class Scraper
   ESPN = "http://streak.espn.com/en/"
   @@scraped_props = []
-  @@team_urls = []
+  @@props = []
 
-  def self.get_page
+  def self.scrape_page
     @doc = Nokogiri::HTML(open(ESPN))
-    @prop_num = @doc.css("div.matchupDate").size
+    @@scraped_props = @doc.css("div .matchup-container")
   end
 
-  def self.get_teams
-    @away_teams = []
-    @home_teams = []
-    @doc.css("div #games-content tr td.mg-column3.opponents").each_with_index do |team, index|
-      index.even? ? @away_teams.push(team.text) : @home_teams.push(team.text)
-    end
-  end
-
-  def self.build_props
-    get_teams
-    @doc.css("div.matchup-container div.gamequestion strong").each_with_index do |event, index|
-      event = event.text
-      start = @doc.css("div.matchupDate")[index].text
-      sport = @doc.css("div.sport-description")[index].text
-      prop_preview = @doc.css("div.matchupStatus a")[index].attr("href")
+  def self.scrape_props
+    @@scraped_props.each_with_index do |p, index|
       prop = {
-        event_title: event,
-        start_time: start,
-        sport: sport,
-        prop_preview: prop_preview,
-        away_team: @away_teams[index],
-        home_team: @home_teams[index],
-        away_team_url: "",
-        home_team_url: ""
-        }
-        @@scraped_props << prop
-    end
-end
+        prop_id_num: index + 1,
+        event_title: p.css(".gamequestion").text,
+        start_time: p.css("div .startTime").text,
+        sport: p.css(".sport-description").text,
+        away_team: p.css("td span strong")[0].text,
+        home_team: "@" + p.css("td span strong")[1].text,
+        prop_preview: p.css("div.matchupStatus a").attr("href").value,
 
-  def self.scrape_team_urls
-    if @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").size/2 == @@scraped_props.size
-      @doc.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin").each_with_index do |team, index|
-        team_url = ESPN + "#{team.attr("href")}"
-        @@team_urls << team_url
-      end
-    else
-      @@team_urls = Array.new(@prop_num, "")
+        #if prop is in progress, method error for css method error avoided
+        away_team_url: p.css(".matchupStatus").text != "Not Started" ? "In Progress/Final" : "http://streak.espn.com/en/" + p.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[0].attr("href"),
+        home_team_url: p.css(".matchupStatus").text != "Not Started" ? "In Progress/Final" : "http://streak.espn.com/en/" + p.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[1].attr("href"),
+        matchup_status:p.css(".matchupStatus").text
+      }
+
+        # CSS issue if one or both of opponents are ranked (i.e "#20 Auburn" steals one of the 'strong' tags and won't properly seed prop opponents from array
+        if p.css("td span strong").size == 4
+          prop[:away_team] = "#{p.css("td span strong")[0].text}" + "#{p.css("td span strong")[1].text}"
+          prop[:home_team] = "@"+"#{p.css("td span strong")[2].text}" + "#{p.css("td span strong")[3].text}"
+        elsif p.css("td span strong").size == 3 && prop[:away_team].include?("#")
+          prop[:away_team] = "#{p.css("td span strong")[0].text}" + "#{p.css("td span strong")[1].text}"
+          prop[:home_team] = "@"+"#{p.css("td span strong")[2].text}"
+        elsif p.css("td span strong").size == 3 && prop[:home_team].include?("#")
+          prop[:away_team] = "#{p.css("td span strong")[0].text}"
+          prop[:home_team] = "@"+"#{p.css("td span strong")[1].text}" + "#{p.css("td span strong")[2].text}"
+        else
+        end
+      @@props << prop
     end
   end
-
 
   def self.all_props
-    @@scraped_props
-  end
-
-  def self.all_team_urls
-    @@team_urls
+    @@props
   end
 end
