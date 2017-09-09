@@ -126,7 +126,7 @@ class Cli
     else
       puts ""
       @@user_selections.each do |pick|
-        puts "#{pick[:start_time]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
+        puts "#{pick[:prop_id_num]}. " + "#{pick[:start_time]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
         puts""
       end
     menu
