@@ -26,7 +26,7 @@ class Scraper
 
         #if prop is in progress, method error for css method error avoided
         away_team_url: p.css(".matchupStatus").text != "Not Started" ? "In Progress/Final" : "http://streak.espn.com/en/" + p.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[0].attr("href"),
-        home_team_url: p.css(".matchupStatus").text != "Not Started" ? "In Progress/Final" : "http://streak.espn.com/en/" + p.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[0].attr("href"),
+        home_team_url: p.css(".matchupStatus").text != "Not Started" ? "In Progress/Final" : "http://streak.espn.com/en/" + p.css("td a#matchupDiv.mg-check.mg-checkEmpty.requireLogin")[1].attr("href"),
         matchup_status:p.css(".matchupStatus").text
       }
 
