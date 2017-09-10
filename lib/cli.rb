@@ -13,7 +13,6 @@ class Cli
     self.welcome
     self.print_props
     self.menu
-
   end
 
   def welcome
