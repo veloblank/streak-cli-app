@@ -7,9 +7,9 @@ class Cli
   @@user_selections = []
 
   def run
-    Scraper.scrape_page
+    #Scraper.scrape_page
     Scraper.scrape_props
-    Prop.build_props
+    #Prop.build_props
     self.welcome
     self.print_props
     self.menu

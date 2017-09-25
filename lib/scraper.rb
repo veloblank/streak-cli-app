@@ -5,15 +5,15 @@ require 'pry'
 class Scraper
   ESPN = "http://streak.espn.com/en/"
   @@scraped_props = []
-  @@props = []
+  #@@props = []
 
   def self.scrape_page
     @doc = Nokogiri::HTML(open(ESPN))
-    @@scraped_props = @doc.css("div .matchup-container")
+    @doc.css("div .matchup-container")
   end
 
   def self.scrape_props
-    @@scraped_props.each_with_index do |p, index|
+    scrape_page.each_with_index do |p, index|
       prop = {
         prop_id_num: index + 1,
         event_title: p.css(".gamequestion").text,
@@ -41,11 +41,11 @@ class Scraper
           prop[:home_team] = "@"+"#{p.css("td span strong")[1].text}" + "#{p.css("td span strong")[2].text}"
         else
         end
-      @@props << prop
+        Prop.new(prop)
     end
   end
 
-  def self.all_props
-    @@props
-  end
+#   def self.all_props
+#     @@props
+#   end
 end
