@@ -31,7 +31,7 @@ class Prop
   #   end
   # end
   def self.save(hash)
-    
+
   end
 
   def self.all_props

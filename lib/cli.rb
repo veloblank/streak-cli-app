@@ -11,7 +11,7 @@ class Cli
     Scraper.scrape_props
     #Prop.build_props
     self.welcome
-    self.print_props
+    self.print_all_props
     self.menu
   end
 
@@ -28,7 +28,7 @@ class Cli
     puts ""
   end
 
-  def print_props
+  def print_all_props
     Prop.all_props.each do |prop|
       puts "#{prop.event_title}".colorize(:red)
       puts "#{prop.prop_id_num}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "   #{prop.home_team}"
@@ -36,9 +36,18 @@ class Cli
     end
   end
 
+  def print_prop(prop_array)
+    prop_array.each do |prop|
+      puts "#{prop.event_title}".colorize(:red)
+      puts "#{prop.prop_id_num}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "   #{prop.home_team}"
+      puts ""
+    end
+    menu
+  end
+
   def menu
     input = ""
-    puts "Type 'list', 'exit' or choose a prop you want to see more about:"
+    puts "Type 'list', 'search by sport', 'exit' or choose a prop you want to see more about:"
     input = gets.strip.downcase
     menu if input.to_i > Prop.all_props.size
     case input
@@ -46,6 +55,11 @@ class Cli
       exit
     when 'list'
       user_selections
+    when 'search by sport'
+      input = gets.strip
+      events = Prop.props_by_sport(input)
+      puts "================================="
+      print_prop(events)
     else
       input = input.to_i
       prop = Prop.all_props.slice(input-1)
