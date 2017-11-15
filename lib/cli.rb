@@ -56,9 +56,10 @@ class Cli
     when 'list'
       user_selections
     when 'search by sport'
+      puts "Input sport: "
       input = gets.strip
       events = Prop.props_by_sport(input)
-      puts "================================="
+      puts "==================#{events.length} #{input} Props=================="
       print_prop(events)
     else
       input = input.to_i
