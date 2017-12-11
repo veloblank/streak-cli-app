@@ -22,7 +22,7 @@ class Cli
     puts "----------------------------------------------".colorize(:green)
     puts "     Welcome to the DailyStreak Front Page".colorize(:green)
     puts "----------------------------------------------".colorize(:green)
-    puts "Here are the Streak props for today..."
+    puts "Here are the #{Prop.all_props.count} Streak props for today..."
     puts ""
     puts ""
     puts ""
@@ -128,6 +128,17 @@ class Cli
           run
         end
       end
+    end
+  end
+
+  def leaderboard
+    lb_streaks = []
+    lb = Scraper.scrape_leaderboard
+    i = 2
+    while i < 500 do
+      streak = lb.css("#leaderboardTable div table tbody tr td")[i].text.gsub(/[^0-9]/,"").to_i
+      lb_streaks.push(streak)
+      i + 4
     end
   end
 

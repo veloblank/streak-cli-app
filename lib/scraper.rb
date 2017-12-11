@@ -3,8 +3,10 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
+
   ESPN = "http://streak.espn.com/en/"
   LEADERBOARD = "http://streak.espn.com/en/leaderboard?lbType=winningStreaks"
+  @@lb_streaks = []
   @@scraped_props = []
   #@@props = []
 
@@ -14,10 +16,8 @@ class Scraper
   end
 
   def self.scrape_leaderboard
-    @lb = Nokogiri::HTML(open(LEADERBOARD))
-    #@lb.css("#leaderboardTable div table tbody tr td")[1].text.gsub("W", "").to_i
+    Nokogiri::HTML(open(LEADERBOARD))
   end
-
 
   def self.scrape_props
     scrape_page.each_with_index do |p, index|
@@ -55,5 +55,4 @@ class Scraper
 #   def self.all_props
 #     @@props
 #   end
-  binding.pry
 end
