@@ -4,6 +4,7 @@ require 'pry'
 
 class Scraper
   ESPN = "http://streak.espn.com/en/"
+  LEADERBOARD = "http://streak.espn.com/en/leaderboard?lbType=winningStreaks"
   @@scraped_props = []
   #@@props = []
 
@@ -11,6 +12,12 @@ class Scraper
     @doc = Nokogiri::HTML(open(ESPN))
     @doc.css("div .matchup-container")
   end
+
+  def self.scrape_leaderboard
+    @lb = Nokogiri::HTML(open(LEADERBOARD))
+    #@lb.css("#leaderboardTable div table tbody tr td")[1].text.gsub("W", "").to_i
+  end
+
 
   def self.scrape_props
     scrape_page.each_with_index do |p, index|
@@ -48,4 +55,5 @@ class Scraper
 #   def self.all_props
 #     @@props
 #   end
+  binding.pry
 end
