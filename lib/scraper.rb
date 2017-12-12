@@ -1,7 +1,3 @@
-require 'nokogiri'
-require 'open-uri'
-require 'pry'
-
 class Scraper
 
   ESPN = "http://streak.espn.com/en/"

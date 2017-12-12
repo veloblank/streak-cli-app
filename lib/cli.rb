@@ -1,8 +1,3 @@
-require 'pry'
-require 'colorize'
-require 'time'
-require 'launchy'
-
 class Cli
   @@user_selections = []
 
@@ -51,6 +46,8 @@ class Cli
     input = gets.strip.downcase
     menu if input.to_i > Prop.all_props.size
     case input
+    when "leaderboard"
+      leaderboard
     when "exit"
       exit
     when 'list'
@@ -135,11 +132,20 @@ class Cli
     lb_streaks = []
     lb = Scraper.scrape_leaderboard
     i = 2
-    while i < 500 do
+    until i > 500 do
       streak = lb.css("#leaderboardTable div table tbody tr td")[i].text.gsub(/[^0-9]/,"").to_i
       lb_streaks.push(streak)
-      i + 4
+      i+=5
     end
+
+    lb_streaks.uniq.each do |x|
+      if lb_streaks.count(x) == 1
+        puts "#{x} - #{lb_streaks.count(x)} entry"
+      else
+        puts "#{x} - #{lb_streaks.count(x)} entries"
+      end
+    end
+    menu
   end
 
   def user_selections

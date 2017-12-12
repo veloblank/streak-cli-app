@@ -1,5 +1,3 @@
-require 'pry'
-
 class Prop
   #@@scraped_prop_data = []
   @@props = []
