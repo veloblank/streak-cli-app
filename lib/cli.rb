@@ -130,11 +130,14 @@ class Cli
 
   def leaderboard
     lb_streaks = []
+    lb_picks = []
     lb = Scraper.scrape_leaderboard
     i = 2
     until i > 500 do
-      streak = lb.css("#leaderboardTable div table tbody tr td")[i].text.gsub(/[^0-9]/,"").to_i
+      streak = lb.css("#leaderboardTable div table tbody tr td")[i].text #.gsub(/[^0-9]/,"").to_i
+      picked = lb.css("#leaderboardTable div table tbody tr td")[i + 2].text
       lb_streaks.push(streak)
+      lb_picks.push(picked)
       i+=5
     end
 
