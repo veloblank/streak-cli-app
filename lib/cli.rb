@@ -133,8 +133,9 @@ class Cli
       puts ""
       menu
     else
+      sorted_list = @@user_selections.sort {|a,b| a[:automate_pick_time] <=> b[:automate_pick_time]}
       puts ""
-      @@user_selections.each do |pick|
+      sorted_list.each do |pick|
         puts "#{pick[:prop_id_num]}. " + "#{pick[:start_time]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
         puts""
       end
