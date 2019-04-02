@@ -1,4 +1,5 @@
 class Cli
+  @@user_selections = []
 
   def run
     Scraper.scrape_props

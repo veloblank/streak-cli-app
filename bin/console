@@ -3,8 +3,4 @@ require_relative '../config/environment'
 require 'irb'
 require "require_all"
 
-def reload!
-  load_all './lib'
-end
-
 Cli.new.run
