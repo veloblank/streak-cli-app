@@ -23,8 +23,8 @@ class Cli
 
   def print_all_props
     Prop.all_props.each do |prop|
-      puts "#{prop.event_title}".colorize(:red)
-      puts "#{prop.prop_id_num}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "   #{prop.home_team}"
+      puts "#{prop.title}".colorize(:red)
+      puts "#{prop.prop_id}. ".colorize(:green) + "#{prop.start}   " + "#{prop.sport}   " + "#{prop.away}   " + " vs. " + "   #{prop.home}"
       puts ""
     end
   end

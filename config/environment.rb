@@ -1,10 +1,11 @@
 require_relative '../lib/cli'
 require_relative '../lib/prop'
 require_relative '../lib/scraper'
+
 require 'pry'
 require 'colorize'
 require 'time'
 require 'launchy'
 require 'nokogiri'
 require 'open-uri'
-require 'require-all'
+require 'require_all'
