@@ -5,11 +5,11 @@ DailyStreak
 
 Welcome to my DailyStreak CLI gem project!
 
-The application can be launched with ./bin/DailyStreak
+The application can be launched with ruby bin/DailyStreak in the project folder.
 
 In order for the app to properly work, the user needs to be logged into an ESPN account, or there could be potential problems launching picks after scraping. A video walk-through accompanies this project for the Flatiron School.
 
-Currently this application is not a publicly available gem. Because it has the potential to violate the Terms of Service of ESPN's fantasy contest, Streak for the Cash, I will not make this a public gem. While it's current form may not violate the TOS, because picks can eventually be automated, it would violate the TOS regarding botting/automation in order to gain an advantage over other contest participants. In the app's current form I think this is a gray area now. It is primarily a scraper that reconstitutes the props into a CLI where the picks can be made, without giving an advantage over other contestants, similar to an app on a phone, where contestants can make picks away from a computer.
+Currently this application is not a publicly available gem. Because it has the potential to violate the Terms of Service of ESPN's fantasy contest, Streak for the Cash, I will not make this a public gem. While it's current form may not violate the TOS, because picks can eventually be automated, it would violate the TOS regarding botting/automation in order to gain an advantage over other contest participants. In the app's current form I think this is a gray area now. It is primarily a scraper that reconstitutes the props into a CLI where the picks can be made, without giving an advantage over other contestants, similar to an app (the official Streak for the Cash app) on a phone, where contestants can make picks away from a computer, but are not automated.
 
 Future Development
 
@@ -27,4 +27,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/velobl
 
 License
 
-The gem is available as open source under the terms of the MIT License.
+While not yet a Ruby gem, the codebase is available as open source software under the terms of the MIT License. Please consider me as a willing participant in future developments of the project. It has served its purpose as a CLI project, but its impact can be much greater. 
