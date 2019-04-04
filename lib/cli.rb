@@ -106,7 +106,7 @@ class Cli
           puts "Choose time (hhmmss) to make pick:"
           choose_time = gets.strip
           user_prop_choice = {
-            prop_id_num: prop.prop_id,
+            prop_id: prop.prop_id,
             title: prop.title,
             start:  prop.start,
             sport: prop.sport,
@@ -135,7 +135,7 @@ class Cli
       sorted_list = @@user_selections.sort {|a,b| a[:automate_pick_time] <=> b[:automate_pick_time]}
       puts ""
       sorted_list.each do |pick|
-        puts "#{pick[:prop_id_num]}. " + "#{pick[:start_time]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
+        puts "#{pick[:prop_id]}. " + "#{pick[:start]} ".colorize(:red) + " #{pick[:selection]}".colorize(:red) + " Pick Time: ".colorize(:yellow) + "#{pick[:automate_pick_time]}".colorize(:yellow)
         puts""
       end
     menu
