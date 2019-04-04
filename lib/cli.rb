@@ -9,8 +9,7 @@ class Cli
   end
 
   def welcome
-    puts ""
-    puts ""
+    print "\e[2J\e[f"
     puts ""
     puts "----------------------------------------------".colorize(:green)
     puts "     Welcome to the DailyStreak Front Page".colorize(:green)
@@ -31,8 +30,8 @@ class Cli
 
   def print_prop(prop_array)
     prop_array.each do |prop|
-      puts "#{prop.event_title}".colorize(:red)
-      puts "#{prop.prop_id_num}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "   #{prop.home_team}"
+      puts "#{prop.title}".colorize(:red)
+      puts "#{prop.prop_id}. ".colorize(:green) + "#{prop.start}   " + "#{prop.sport}   " + "#{prop.away}   " + " vs. " + "   #{prop.home}"
       puts ""
     end
     menu
@@ -61,14 +60,14 @@ class Cli
       prop = Prop.all_props.slice(input-1)
       puts ""
       puts "More info on:"
-      puts "#{prop.event_title}".colorize(:red)
-      puts "#{prop.prop_id_num}. ".colorize(:green) + "#{prop.start_time}   " + "#{prop.sport}   " + "#{prop.away_team}   " + " vs. " + "   #{prop.home_team}"
+      puts "#{prop.title}".colorize(:red)
+      puts "#{prop.prop_id}. ".colorize(:green) + "#{prop.start}   " + "#{prop.sport}   " + "#{prop.away}   " + " vs. " + "   #{prop.home}"
       puts prop.matchup_status.colorize(:red)
       puts ""
       puts "1. Read Matchup Preview/Check Score"
       puts ""
-      puts "2. Insta-pick Away Team: " + "#{prop.away_team}".colorize(:green)
-      puts "3. Insta-pick Home Team: " + "#{prop.home_team}".colorize(:green)
+      puts "2. Insta-pick Away Team: " + "#{prop.away}".colorize(:green)
+      puts "3. Insta-pick Home Team: " + "#{prop.home}".colorize(:green)
       puts ""
       puts "4. Save Away Team in Prop List"
       puts "5. Save Home Team in Prop List"
@@ -91,11 +90,11 @@ class Cli
           puts "Choose time (hhmmss) to make pick:"
           choose_time = gets.strip
           user_prop_choice = {
-            prop_id_num: prop.prop_id_num,
-            event_title: prop.event_title,
-            start_time:  prop.start_time,
+            prop_id: prop.prop_id,
+            title: prop.title,
+            start:  prop.start,
             sport: prop.sport,
-            selection: prop.away_team,
+            selection: prop.away,
             prop_preview: prop.prop_preview,
             selection_url: prop.away_team_url,
             matchup_status: prop.matchup_status,
@@ -107,11 +106,11 @@ class Cli
           puts "Choose time (hhmmss) to make pick:"
           choose_time = gets.strip
           user_prop_choice = {
-            prop_id_num: prop.prop_id_num,
-            event_title: prop.event_title,
-            start_time:  prop.start_time,
+            prop_id_num: prop.prop_id,
+            title: prop.title,
+            start:  prop.start,
             sport: prop.sport,
-            selection: prop.home_team,
+            selection: prop.home,
             prop_preview: prop.prop_preview,
             selection_url: prop.home_team_url,
             matchup_status: prop.matchup_status,
