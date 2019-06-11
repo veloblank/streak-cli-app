@@ -41,20 +41,15 @@ class Cli
     input = ""
     puts "Type 'list', 'search by sport', 'exit' or choose a prop you want to see more about:"
     input = gets.strip.downcase
+
     menu if input.to_i > Prop.all_props.size
     case input
-    when "leaderboard"
-      leaderboard
     when "exit"
       exit
     when 'list'
       user_selections
     when 'search by sport'
-      puts "Input sport: "
-      input = gets.strip
-      events = Prop.props_by_sport(input)
-      puts "==================#{events.length} #{input} Props=================="
-      print_prop(events)
+      search_by_sport
     else
       input = input.to_i
       prop = Prop.all_props.slice(input-1)
@@ -62,7 +57,6 @@ class Cli
       puts "More info on:"
       puts "#{prop.title}".colorize(:red)
       puts "#{prop.prop_id}. ".colorize(:green) + "#{prop.start}   " + "#{prop.sport}   " + "#{prop.away}   " + " vs. " + "   #{prop.home}"
-      puts prop.matchup_status.colorize(:red)
       puts ""
       puts "1. Read Matchup Preview/Check Score"
       puts ""
@@ -87,42 +81,40 @@ class Cli
           Launchy.open("#{prop.home_team_url}")
           run
         when "4"
-          puts "Choose time (hhmmss) to make pick:"
-          choose_time = gets.strip
-          user_prop_choice = {
-            prop_id: prop.prop_id,
-            title: prop.title,
-            start:  prop.start,
-            sport: prop.sport,
-            selection: prop.away,
-            prop_preview: prop.prop_preview,
-            selection_url: prop.away_team_url,
-            matchup_status: prop.matchup_status,
-            automate_pick_time: choose_time
-          }
-          @@user_selections << user_prop_choice
-          puts "Saved!"
+          automate_pick_time(prop)
         when "5"
-          puts "Choose time (hhmmss) to make pick:"
-          choose_time = gets.strip
-          user_prop_choice = {
-            prop_id: prop.prop_id,
-            title: prop.title,
-            start:  prop.start,
-            sport: prop.sport,
-            selection: prop.home,
-            prop_preview: prop.prop_preview,
-            selection_url: prop.home_team_url,
-            matchup_status: prop.matchup_status,
-            automate_pick_time: choose_time
-          }
-          @@user_selections << user_prop_choice
-          puts "Saved!"
+          automate_pick_time(prop)
         else
           run
         end
       end
     end
+  end
+
+  def automate_pick_time(prop)
+    puts "Choose time (hhmmss) to make pick:"
+    choose_time = gets.strip
+    user_prop_choice = {
+      prop_id: prop.prop_id,
+      title: prop.title,
+      start:  prop.start,
+      sport: prop.sport,
+      selection: prop.away,
+      prop_preview: prop.prop_preview,
+      selection_url: prop.away_team_url,
+      matchup_status: prop.matchup_status,
+      automate_pick_time: choose_time
+    }
+    @@user_selections << user_prop_choice
+    puts "Saved!"
+  end
+
+  def search_by_sport
+    puts "Input sport: "
+    input = gets.strip
+    events = Prop.props_by_sport(input)
+    puts "==================#{events.length} #{input} Props=================="
+    print_prop(events)
   end
 
   def user_selections
