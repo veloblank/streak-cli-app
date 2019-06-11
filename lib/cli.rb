@@ -39,12 +39,16 @@ class Cli
 
   def menu
     input = ""
-    puts "Type 'list', 'search by sport', 'exit' or choose a prop you want to see more about:"
+    puts "Type 'home' to return to the main prop list"
+    puts "Type 'list' to see a list of your pending picks"
+    puts "Use 'search by sport' to filter by sport"
+    puts "Choose a number of a prop you want to see more about"
+    puts "Or type 'exit'"
     input = gets.strip.downcase
     menu if input.to_i > Prop.all_props.size
     case input
-    when "leaderboard"
-      leaderboard
+    when "home"
+      run
     when "exit"
       exit
     when 'list'
@@ -74,7 +78,7 @@ class Cli
       puts ""
       prop_menu_input = ""
       while prop_menu_input != 'exit'
-        puts "Press Enter to go back or type 'exit': "
+        puts "Press Enter to go back or type 'exit' to exit the program"
         prop_menu_input = gets.chomp
         case prop_menu_input
         when "1"
