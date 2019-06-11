@@ -13,7 +13,7 @@ class Scraper
       prop = Prop.new
       prop.prop_id = index
       prop.title = p.css(".gamequestion").text
-      prop.start = p.css("div .startTime").text
+      prop.start = p.css(".startTime").attr("data-locktime").value
       prop.sport = p.css(".sport-description").text
       prop.away = p.css("td span strong")[0].text
       prop.home = "@" + p.css("td span strong")[1].text
